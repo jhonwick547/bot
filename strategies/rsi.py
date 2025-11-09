@@ -1,0 +1,19 @@
+# strategies/rsi.py
+import pandas as pd
+
+def get_rsi_signal(closes, period=14):
+    # Simple RSI calculation
+    series = pd.Series(closes)
+    delta = series.diff().dropna()
+    up = delta.clip(lower=0).ewm(alpha=1/period).mean()
+    down = -delta.clip(upper=0).ewm(alpha=1/period).mean()
+    rs = up / down
+    rsi = 100 - (100 / (1 + rs))
+    last = rsi.iloc[-1]
+    # Overbought/oversold signals
+    if last > 70:
+        return -1  # sell signal
+    elif last < 30:
+        return 1   # buy signal
+    else:
+        return 0
