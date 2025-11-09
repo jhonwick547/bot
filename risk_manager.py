@@ -2,18 +2,18 @@
 class RiskManager:
     def __init__(self, balance):
         self.balance = balance
-        self.risk_pct = 0.02  # risk 2% per trade
+        self.risk_pct = 0.02
+
     def calculate_size(self, price, stop_price):
-        # Compute quantity so that (price - stop) * qty = risk_pct * balance
         risk_amount = self.balance * self.risk_pct
         risk_per_unit = abs(price - stop_price)
-        if risk_per_unit <= 0: 
+        if risk_per_unit <= 0:
             return 0
         qty = risk_amount / risk_per_unit
         return round(qty, 6)
+
     def calculate_stop(self, entry_price, direction):
-        # Simple example: 1% ATR or fixed 2% away
         if direction == 1:
-            return entry_price * 0.98  # 2% below
+            return entry_price * 0.98
         else:
-            return entry_price * 1.02  # 2% above
+            return entry_price * 1.02
