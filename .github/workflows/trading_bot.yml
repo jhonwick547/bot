@@ -1,12 +1,13 @@
+# .github/workflows/trading_bot.yml
 name: Crypto Trading Bot
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs at the top of every hour (UTC)
-  workflow_dispatch:      # Allows manual triggering from the Actions tab
+    - cron: '0 * * * *'  # Runs hourly
+  workflow_dispatch:
 
 permissions:
-  contents: write         # Required to commit state/log files back to the repo
+  contents: write
 
 jobs:
   trade:
@@ -31,7 +32,7 @@ jobs:
           BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
           BINANCE_API_SECRET: ${{ secrets.BINANCE_API_SECRET }}
         run: |
-          python bot.py || echo "Bot execution failed; check logs."
+          python bot.py || echo "Bot run failed"
 
       - name: Commit updated state and logs
         uses: stefanzweifel/git-auto-commit-action@v4
